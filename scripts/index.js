@@ -68,47 +68,44 @@ const htmlModalContent = ({id, title, description, url}) => {
 };
 
 const updateLocalStorage = () => {
-    LocalStorage.setItem("tasks",
-         JSON.stringify ({
-        tasks: state.taskList,
-    })
-);
+  localStorage.setItem("tasks", JSON.stringify({
+    tasks: state.taskList,
+}));
 };
 
 const LoadInitialData = () => {
-//  const LocalStorageCopy = JSON.parse(LocalStorage.task);
+ const LocalStorageCopy = JSON.parse(localStorage.getItem('tasks'));
 
- //if(localStorageCopy) state.taskList = LocalStorageCopy.tasks;
+ if(LocalStorageCopy) state.taskList = LocalStorageCopy.tasks;
 
 state.taskList.map((cardDate)  =>  {
     taskContents.insertAdjacentHTML("beforeend", htmlTaskContent(cardDate));
-
 });
 
 };
 
 const handleSubmit = (event) => {
-const id ='${Date.now()}';
-const input = {
-url: document.getElementById('imageUrl').value,
-title: document.getElementById('taskTitle').value,
-description: document.getElementById('taskDescription').value,
-type: document.getElementById('taskType').value,
-};
+  const id =`${Date.now()}`;
+  const input = {
+    url: document.getElementById('imageUrl').value,
+    title: document.getElementById('taskTitle').value,
+    description: document.getElementById('taskDescription').value,
+    type: document.getElementById('taskType').value,
+  };
 
-if(input.title === "" || input.description === "" || input.type === ""){
-    return alert ("please fill all the fields");
-}
-taskContents.insertAdjacentElement(
-    "beforeend",
-     htmlTaskContent({
-        ...input,
-        id,
-     })
-);
+  if(input.title === "" || input.description === "" || input.type === ""){
+      return alert ("please fill all the fields");
+  }
+  taskContents.insertAdjacentHTML(
+      "beforeend",
+      htmlTaskContent({
+          ...input,
+          id,
+      })
+  );
 
-state.taskList.push({...input, id});
-updateLocalStorage();
+  state.taskList.push({...input, id});
+  updateLocalStorage();
 
 
 };
